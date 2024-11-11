@@ -55,7 +55,7 @@
 
 ### 📖 DB 모델링
 
-<img src="https://github.com/vanjooda/SBC2024/blob/main/%EB%AC%BC%EB%A6%AC%EC%A0%81%EB%AA%A8%EB%8D%B8_%EC%B5%9C%EC%A2%85.png" alt="물리적 모델링" width="600">
+<img src="https://github.com/vanjooda/SBC2024/blob/main/%EB%AC%BC%EB%A6%AC%EC%A0%81%EB%AA%A8%EB%8D%B8_%EC%B5%9C%EC%A2%85.png" alt="물리적 모델링" width="1000">
 
 <br />
 <hr/>
