@@ -1,0 +1,47 @@
+ul.first_content {
+    float: left;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.sites ul .first, .sites ul .four {
+    margin-left: 0;
+}
+
+.sites > ul > li {
+    width: 48%;
+    margin-left: 2%;
+}
+
+.sites > ul > li {
+    width: 30%;
+    display: inline-block;
+    margin-left: 4%;
+    margin-bottom: 30px;
+    vertical-align: top;
+    -webkit-transition: all 1.5s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+}
+
+.sites > ul > li > h3 > a {
+    background: darkslategrey;
+    text-align: center;
+    text-decoration: none;
+    padding: 15px;
+    font-size: 18px;
+    color: #fff;
+    display: block;
+    font-family: 'notokr';
+    font-weight: 400;
+}
+
+.sites > ul > li > h3 > a {
+    font-size: 16px;
+}
+
+.sites > ul > li > ul > li > a {
+    font-size: 14px;
+    text-decoration: none;
+    color: #555555;
+}

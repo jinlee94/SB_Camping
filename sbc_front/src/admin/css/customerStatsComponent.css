@@ -1,0 +1,68 @@
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.bg-light {
+    background-color: #f8f9fa !important;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.display-4 {
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+.text-primary {
+    color: #0d6efd !important;
+}
+
+.text-success {
+    color: #198754 !important;
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+.fw-bold {
+    font-weight: 600;
+}
+
+.customer-info {
+    padding: 15px;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+.customer-info .fw-bold {
+    color: #495057;
+}
+
+.customer-info .ms-2 {
+    color: #212529;
+}
+
+/* 기존 card 호버 효과는 유지 */
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.bg-light {
+    background-color: #f8f9fa !important;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}

@@ -1,0 +1,152 @@
+#slider1, #slider2 {
+    margin-bottom: 10px ;
+    position: relative;
+    height: 18vh;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+#slider1 {
+    background-image: url(https://images.pexels.com/photos/1539225/pexels-photo-1539225.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+}
+
+#slider2 {
+    background-image: url(https://images.pexels.com/photos/1687845/pexels-photo-1687845.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+}
+
+.slider1_text {
+    position: absolute; /* 위치 조정 */
+    top: 50%; /* 세로 중앙 정렬 */
+    left: 50%; /* 가로 중앙 정렬 */
+    transform: translate(-50%, -50%); /* 정확한 중앙 정렬 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    color: white; /* 텍스트 색상 */
+}
+
+#slider1 h2, #slider1 h5 {
+    margin: 0; /* 기본 마진 제거 */
+}
+
+
+#communitywrap {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    height: 100%;
+    margin-top: 20px;
+    margin-bottom: 60px; /* 하단 여백 추가 */
+}
+
+#calendarwrap {
+    flex: 1;
+    min-width: 50%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#guidewrap {
+    flex: 1;
+    display: flex;
+    height: 100%;
+}
+
+/* 카드들을 감싸는 컨테이너 */
+#guidewrap .d-flex {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+/* 각 카드 컨테이너 */
+.card-container {
+    flex: 1;
+    display: flex;
+    margin-bottom: 10px;
+}
+
+/* 마지막 카드 컨테이너의 마진 제거 */
+.card-container:last-child {
+    margin-bottom: 0;
+}
+
+/* 카드 자체 스타일링 */
+.card {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* 카드 내부 컨텐츠 반응형 조절 */
+.display-4 {
+    font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+}
+
+.card-title {
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
+}
+
+/* 반응형 조정 */
+@media (max-width: 768px) {
+    #communitywrap {
+        flex-direction: column;
+    }
+
+    #calendarwrap,
+    #guidewrap {
+        width: 100%;
+    }
+}
+
+/* ResCalendar 컴포넌트 스타일 조정 */
+.react-calendar {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* 숫자와 단위를 붙여서 표시하기 위한 스타일 */
+.stats-number {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.stats-number .number {
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.stats-number .unit {
+    font-size: 1rem;
+    color: #6c757d;
+    margin-left: 2px;
+}
+
+a {
+    color : #0d6efd;
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+a:hover {
+    color : blueviolet;
+}

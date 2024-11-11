@@ -1,0 +1,37 @@
+
+#menuImg{
+    width: 100%;
+    max-height: 420px;
+}
+
+#menubuttonwrap{
+    margin: 40px 0;
+    display: flex;
+    justify-content: space-between;
+    border-collapse: collapse;
+}
+
+.menubutton{
+    margin-bottom: 0;
+    padding: 20px 0;
+    text-decoration: none;
+    background-color: white;
+    border: 1px solid rgb(168, 168, 168);
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-radius: 0px;
+    border-collapse: collapse;
+    margin-right: -1px;
+}
+
+
+.menubutton:hover{
+    background-color: #3f606e;
+    color: white;
+}
+
+.menubutton.active {
+    background-color: #3f606e;
+    color: white;
+}

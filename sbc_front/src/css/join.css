@@ -1,0 +1,119 @@
+/* 회원가입 */
+/* 회원가입 이용 약관 동의 */
+.orderbox{
+    margin: 20px 0px;
+}
+.detailwrap{
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1.1em;
+    padding: 0 10px;
+}
+input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    vertical-align: middle;
+}
+.agreed{
+    margin : 20px 0px;
+}
+.agreebuttonwrap{
+    text-align: center;
+
+}
+.agreeButton{
+    width: 250px;
+    padding: 10px;
+    margin-bottom: 100px;
+    background: darkslategrey;
+    border: 1px solid darkslategrey;
+}
+
+
+/* 회원가입 정보 입력 */
+
+/* 회원가입 폼 */
+.joininputwrap{
+    padding: 50px;
+}
+.joininputwrap button{
+    width: 80px;
+}
+.joininputwrap form{
+    padding: 20px 0px 15px;
+    max-width: 900px;
+    margin : auto;
+}
+.joininputwrap label{
+    text-align: right;
+}
+
+
+/* 회원가입 버튼 */
+.joinButton{
+    margin : 20px auto;
+    text-align: center;
+}
+.joinButton button{
+    width: 250px;
+    padding: 10px;
+}
+
+
+/*
+ *
+ * 회원정보 수정 페이지 */
+.modmemwrap{
+    max-width: fit-content;
+    margin: 30px auto;
+    padding: 30px 20px;
+    position: relative;
+}
+.modmemwrap input[type="text"], input[type="password"], input[type="email"], select{
+    font-size: 14px;
+}
+.modmemwrap label{
+    font-size: 14px;
+    width: fit-content;
+    min-width: 150px;
+}
+.modmemwrap input[type="radio"] label{
+    text-align: left;
+}
+.modmemwrap p{
+    width: 100%;
+}
+.withdrawbox{
+    text-align: right;
+    padding-right: 80px;
+    font-size: 14px;
+}
+.withdrawbox span:hover{
+    text-decoration-line: underline;
+    cursor: pointer;
+}
+.btnbox{
+    width: 100%;
+    margin: 30px auto;
+    text-align: center;
+}
+.btnbox button{
+    margin: 0px auto;
+}
+
+/* 회원가입 완료 */
+.comwrap{
+    text-align: center;
+    padding: 50px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    margin-top: 30px;
+}
+.buttonwrap{
+    text-align: center;
+    margin: 50px;
+}
+.buttonwrap button{
+    width: 150px;
+    padding: 10px;
+}

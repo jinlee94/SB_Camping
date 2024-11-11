@@ -1,0 +1,96 @@
+/* ----------------- 예약내역 ------------------- */
+/* 테이블 */
+.tablewrap{
+    max-width: 1200px;
+    text-align: center;
+    margin: 0 auto 50px;
+}
+.tablewrap table {
+    min-width: 100%;
+    border-collapse: collapse;
+    border: 0;
+    margin: auto;
+
+}
+th{
+    font-size: 15px;
+    background: #eee;
+}
+td{
+    font-size: 13px;
+    height: 45px;
+}
+th,
+td {
+    border: 1px solid #aaa;
+    padding: 0.4rem;
+    min-width: 7rem;
+    margin: 0;
+}
+
+/* 상태 검색 */
+.confirm_search {
+    margin: 15px 0px;
+    overflow: hidden;
+    display: flex;
+    justify-content: end;
+}
+
+.confirm_search select {
+    border: 1px solid #ddd;
+    width: 100px;
+    height: 35px;
+    line-height: 35px;
+    margin-right: 5px;
+    font-size: 14px;
+}
+
+.confirm_search input {
+    border: 1px solid #457575;
+    background: #457575;
+    color: #fff;
+    padding: 5px 14px;
+    font-size: 14px;
+}
+
+
+/* 버튼 */
+.resbtn{
+    text-decoration-line: underline;
+}
+.canclebtn{
+    border: 1px solid #aaa;
+    padding: 0.4rem 0.6rem;
+    border-radius: 10px;
+    background: gainsboro;
+}
+.canclebtn:hover{
+    background: darkgray;
+}
+.reviewbtn{
+    border: 1px solid #aaa;
+    padding: 0.4rem 0.6rem;
+    border-radius: 10px;
+    background: palegoldenrod;
+}
+
+
+/* ------------------- 예약 상세 페이지 ------------------- */
+.resdetailtablewrap{
+    text-align: center;
+    margin: 20px 0px;
+}
+.resdetailtablewrap table{
+    min-width: 400px;
+    margin : auto
+}
+.resdetailtablewrap td:nth-child(1){
+    background: #eee;
+    min-width: 130px;
+}
+.resdetailtablewrap td:nth-child(2){
+    min-width: 130px;
+}
+.resdetailtablewrap button{
+    margin : 20px;
+}

@@ -1,0 +1,44 @@
+.aside-box{
+    color: #555555;
+    max-width: 130px;
+}
+
+.table-box th, tr, td{
+    border: 1px solid #ddd;
+}
+
+.table-box th{
+    background-color: #537f91;
+    color: white;
+
+}
+
+/* 모달 스타일*/
+.modalStyles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* 모달이미지 스타일 */
+.imageStyles {
+    max-width: 70%;
+    max-height: 90%;
+}
+
+/* 모달 닫기 버튼 스타일*/
+.closeButtonStyles{
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 50px;
+    cursor: pointer;
+}

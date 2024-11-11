@@ -1,0 +1,93 @@
+.accordianNav h3:before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background-color: #444;
+    background: rgba(244, 244, 244, .3);
+    transition: all 0.3s ease-out;
+}
+
+.accordianNav {
+    width: 100%;
+    background: #fff;
+    border-radius: 4px;
+}
+.accordianNav h3 {
+    display: block;
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 4px;
+    margin-bottom: 0;
+    background:none;
+    cursor: pointer;
+    display: flex;
+    margin-left: 10px;
+    align-items: center;
+}
+
+.accordianNav a {
+    text-decoration: none;
+    padding-left: 0;
+}
+.accordianNav h3 img {
+    width:30px;
+    border:none;
+    vertical-align:middle;
+    margin:0 15px;
+}
+
+/* Background hover animation. */
+.accordianNav h3:before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background-color: #444;
+    background: rgba(244, 244, 244, .3);
+    transition: all 0.3s ease-out;
+}
+
+.accordianNav .dropArrow:after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-bottom: 2px solid #757575;
+    border-right: 2px solid #757575;
+    float: right;
+    position: relative;
+    top: -10px;
+    right: 20px;
+    transform: rotate(45deg);
+    transform-origin:
+        center;
+}
+
+
+/* 예약/요금안내 */
+.res-guide-box{
+    margin-top: 10px;
+    margin-bottom: 50px;
+
+}
+.res-title{
+    padding : 10px
+}
+.res-title h4{
+    font-size: 18px;
+}
+.res-title ul {
+    font-size: 14px;
+    color: #555555;
+}
+.res-title ul li {
+    padding : 4px 3px;
+}

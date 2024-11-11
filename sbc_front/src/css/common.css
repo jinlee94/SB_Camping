@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+
+*{
+    font-family: "Noto Sans KR";
+    font-weight: 350;
+}
+
+.navwrap{
+    max-width: 1200px;
+    margin: 0 auto;
+    font-size: 16px;
+}
+.dropdown-box > div > div{
+    font-size: 15px;
+}
+
+#logo{
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: lightseagreen;
+}
+
+/* 메인페이지 퀵 메뉴 */
+.quickmenuwrap{
+    margin: auto 0;
+    height: 50px;
+    width: 100%;
+}
+
+#mainwrap{
+    margin : auto;
+    max-width: 1200px;
+    min-height: 900px;
+}
+
+/* footer */
+.terms:hover{
+    cursor: pointer;
+}
+#footerwrap{
+    background: #bbb;
+    color: white;
+    padding: 40px;
+}
+
+#footerinfo{
+    margin: auto;
+    max-width: 700px;
+    font-size: 12px;
+}
+

@@ -1,0 +1,73 @@
+#loginwrap{
+    padding: 50px 0px;
+    min-height: 500px;
+    box-sizing: border-box;
+}
+
+#loginbox{
+    text-align: center;
+    padding: 40px;
+    border: 1px solid grey;
+    margin : -1px auto;
+    width: 400px;
+}
+
+#loginbox > input {
+    margin : 5px;
+    padding: 10px;
+    border: 1px solid darkslategrey;
+    width: 300px;
+    height: 46px;
+}
+#loginbox > input:focus{
+    outline: none;
+}
+.btn-box{
+    text-align: center;
+    margin: 0 auto;
+}
+.loginbutton_default{
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid #457575;
+    border-radius: 0px;
+    background: #457575;
+    color: white;
+    width: 300px;
+}
+.loginbutton_default:hover{
+    color: white;
+    background: darkslategrey;
+    cursor: pointer;
+    border: 1px solid #457575;
+}
+
+/* ~ 찾기 */
+.findwrap{
+    max-width: 400px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+.findbutton{
+    padding: 10px;
+    border: 1px solid grey;
+    width: 100%;
+    max-width: inherit;
+    margin-right: -1px;
+}
+
+.findbutton:nth-of-type(3){
+    margin-right: 0px;
+}
+
+.findbutton:hover{
+    color: white;
+    background: #457575;
+}
+
+/* 비밀번호 변경 */
+.modPwWrap{
+    font-size: 14px;
+}

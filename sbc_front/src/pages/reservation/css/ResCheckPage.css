@@ -1,0 +1,42 @@
+.mainDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.label {
+    text-align: center;
+}
+
+.formControl {
+    width: 500px;
+    text-align: center;
+    margin-left: -12px;
+}
+
+.label-2 {
+    text-align: center;
+
+}
+
+.formControl-2 {
+    width: 500px;
+    text-align: center;
+    margin-left: -12px;
+}
+
+h3 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.formControl:focus {
+    outline: none; /* 기본 외곽선 제거 */
+    box-shadow: none; /* Bootstrap에서 기본적으로 추가되는 파란색 그림자 제거 */
+}
+
+.checkSuccess {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 200px;
+}
