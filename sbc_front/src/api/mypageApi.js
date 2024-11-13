@@ -26,12 +26,12 @@ export const getReviewNo = async (resId) => {
 }
 
 // 예약 취소 (상태를 예약완료 -> 예약취소로 변경)
-export const cancelRes = async (resId, reason) => {
+export const cancelRes = async (resID, reason) => {
     //console.log('예약 취소 사유 확인 :', reason, 'id : ', resId)
     const header = {
         headers:{'Content-Type': 'application/json'}
     }
-    const res = await jwtAxios.put(`${host}/cancel/${resId}`, {reason}, header);
+    const res = await jwtAxios.put(`${host}/cancel/${resID}`, {reason}, header);
 }
 
 // 회원정보 수정 1 - 비밀번호 인증

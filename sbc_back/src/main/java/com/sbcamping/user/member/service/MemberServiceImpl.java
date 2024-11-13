@@ -35,49 +35,6 @@ public class MemberServiceImpl implements MemberService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final JavaMailSender mailSender;
-
-
-    // 회원가입시 핸드폰번호 중복 체크
-    @Override
-    public Boolean phoneCheck(String phone) {
-        return memberRepository.existsByMemberPhone(phone);
-    }
-
-    // 메일 보내기
-    @Override
-    public String sendEmail(String email) throws MessagingException, NoSuchAlgorithmException {
-        // 이메일 객체 생성
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
-
-        // 10자리의 무작위 문자 생성하기
-        String alphabet = "abcdefghijklmnopqrstuvwxzyABCDEFGHIJKLMNOPQRSTUVWXYZ"; // 알파벳 52개
-        StringBuilder result = new StringBuilder();
-        while(result.length() < 10){ // 0~9, 10번 반복
-            // 난수생성 클래스 : SecureRandom에 위에서 정의한 alphabet부터 +10까지의 길이 즉 52+10 = 62개의 int로 난수 생성
-            int random = SecureRandom.getInstanceStrong().nextInt(alphabet.length() + 10);
-            // 난수가 10보다 작다면 숫자 그대로 추가 (0~9)
-            if(random < 10){
-                result.append(random);
-            } else{ // 난수가 10보다 크거나 같으면 10-10 = 0은 alphabet 변수의 a
-                result.append(alphabet.charAt(random - 10));
-            }
-        }
-        log.info("난수 : {}" , result);
-
-        String content = String.format("SB Camping에서 발송한 인증용 메일입니다. <br> 인증번호 : %s <br><br>", result);
-
-        // 수신자, 제목, 내용 설정
-        helper.setTo(email);
-        helper.setSubject("SB Camping 이메일 인증");
-        helper.setText(content, true);
-
-        mailSender.send(message);
-
-        return result.toString();
-
-    }
 
     // 예약번호로 리뷰 글 번호 가져오기
     @Override
@@ -154,9 +111,6 @@ public class MemberServiceImpl implements MemberService {
         return list;
     }
 
-
-
-
     // 비밀번호 인증 (회원정보수정 들어갈 때 사용)
     @Override
     public String authPw(Long memberId, String memberPw) {
@@ -173,43 +127,6 @@ public class MemberServiceImpl implements MemberService {
         return msg;
     }
 
-    // 회원명 + 이메일로 회원 찾기 (비밀번호 찾기 1)
-    @Override
-    public Member findMemberByNameAndEmail(Member member) {
-        return memberRepository.findByMemberNameAndMemberEmail(member.getMemberName(), member.getMemberEmail());
-    }
-
-    // 회원 비밀번호 변경 (비밀번호 찾기 2)
-    @Override
-    public String updatePw(Member mem) {
-        // ID로 member 조회
-        Member member = memberRepository.findById(mem.getMemberID()).orElse(null);
-        String msg;
-        log.info("회원 상태 : {}", Objects.requireNonNull(member, "Member is null !!").getMemberStatus());
-        if(member.getMemberStatus().equals("OFF")){
-            msg = "fail";
-            return msg;
-        }
-        if (Objects.requireNonNull(member).getMemberPw() != null && member.getMemberEmail() != null) {
-            // 비밀번호 변경
-            member.changePw(passwordEncoder.encode(mem.getMemberPw()));
-            memberRepository.save(member);
-            msg = "success";
-        } else {
-            msg = "fail";
-        }
-        return msg;
-    }
-
-    // 이메일 찾기 (회원명 + 회원 핸드폰번호)
-    @Override
-    public String findEmail(String memberName, String memberPhone) {
-        Member member = memberRepository.findByMemberNameAndMemberPhone(memberName, memberPhone);
-        log.info("이메일찾기 : {}", member.toString());
-        return member.getMemberEmail();
-    }
-
-
     // 회원 등록
     @Override
     public void addMember(Member member) {
@@ -217,20 +134,6 @@ public class MemberServiceImpl implements MemberService {
         member.changePw(pw);
         memberRepository.save(member);
     }
-
-    // 회원가입시 이메일 중복 체크
-    @Override
-    public String emailCheck(String memberEmail) {
-        Integer count = memberRepository.countByMemberEmail(memberEmail);
-        String msg;
-        if (count == 0) {
-            msg = "enable";
-        } else {
-            msg = "disable";
-        }
-        return msg;
-    }
-
 
     // 회원 정보 수정
     @Override
@@ -266,7 +169,6 @@ public class MemberServiceImpl implements MemberService {
             member.changePw(passwordEncoder.encode(newMember.getMemberPw()));
             log.info("비밀번호 수정");
         }
-
         // 회원정보 수정
         return memberRepository.save(member);
     }

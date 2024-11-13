@@ -7,18 +7,19 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
+    // 이메일로 회원 찾기
     Member findByMemberEmail(String email);
 
-    // 이메일 중복체크
+    // 이메일 중복체크 (회원가입)
     Integer countByMemberEmail(String memberEmail);
 
-    // 핸드폰 번호 중복체크
+    // 핸드폰 번호 중복체크 (회원가입)
     Boolean existsByMemberPhone(String phone);
 
-    // 이름 & 핸드폰 번호로 회원 확인
+    // 이름 & 핸드폰 번호로 회원 확인 (이메일 찾기)
     Member findByMemberNameAndMemberPhone(String memberName, String memberPhone);
 
-    // 이름 & 이메일로 회원 확인
+    // 이름 & 이메일로 회원 확인 (비밀번호 찾기)
     Member findByMemberNameAndMemberEmail (String memberName, String memberEmail);
 
 

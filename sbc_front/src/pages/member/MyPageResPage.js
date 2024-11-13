@@ -92,7 +92,7 @@ const MyPageResPage = () => {
             try {
                 cancelRes(reservationId, reason);
                 setShow(false);
-                window.location.reload()
+                window.location.reload();
             } catch (error) {
                 console.log(error);
             }

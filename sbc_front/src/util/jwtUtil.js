@@ -8,8 +8,7 @@ const jwtAxios = axios.create();
 const refreshJWT = async (accessToken, refreshToken) => {
     try {
         const headers = {
-            "Authorization": `Bearer ${accessToken}`,
-            "X-Refresh-Token": refreshToken
+            "Authorization": `Bearer ${accessToken}, ${refreshToken}`,
         };
         const res = await axios.get(`http://localhost:8080/api/auth/refresh`, {headers});
         console.log("refreshJWT-------------" + res.data);

@@ -403,8 +403,8 @@ const JoinAgreeComponent = () => {
                 </FloatingLabel>
                 <p><input type={"checkbox"} className={"terms2agree agreed"}/> 위의 '개인정보처리방침'에 동의합니다.</p>
             </div>
-            <div className={"agreebuttonwrap"}>
-                <Button className={"agreeButton"} onClick={handleToJoin}>회원가입</Button>
+            <div className="agreebuttonwrap">
+                <button className="agreeButton" onClick={handleToJoin}>회원가입</button>
             </div>
         </div>
     );

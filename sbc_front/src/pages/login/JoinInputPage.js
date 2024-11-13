@@ -235,7 +235,7 @@ const JoinInputPage = () => {
         // 비밀번호 유효성 검사
         if(name === 'memberPw'){
             setPwd(event.target.value);
-            const regExp = /^(?=.*[a-z])((?=.*\d)|(?=.*\W)).{10,15}$/;
+            const regExp = /^(?=.*[a-z])((?=.*\d)(?=.*\W)).{10,15}$/;
             if(regExp.test(event.target.value)){
                 setIsPwdValid(true);
             } else{
@@ -258,7 +258,7 @@ const JoinInputPage = () => {
         // 핸드폰 번호 검사
         if (name === 'memberPhone'){
             const phoneNumber = event.target.value;
-            const regExp = /^01([0|1|6|7|8|9])-?([0-9]{4})-?([0-9]{4})$/;
+            const regExp = /^010-?([0-9]{4})-?([0-9]{4})$/;
             if(regExp.test(phoneNumber)){
                 const result = phoneCheck(phoneNumber);
                 //console.log('핸드폰 체크 : ' , result);
@@ -537,7 +537,7 @@ const JoinInputPage = () => {
                     </Form.Group>
                 </Form>
                 <div className="joinButton">
-                    <Button type="submit" onClick={handleSubmit} style={{background:'darkslategrey', border:'1px solid darkslategrey'}}>회원가입</Button>
+                    <button type="submit" onClick={handleSubmit} style={{background:'darkslategrey', border:'1px solid darkslategrey'}}>회원가입</button>
                 </div>
             </div>
         </div>

@@ -21,14 +21,13 @@ public class MemberController {
 
     private final MemberService memberService;
 
-
-    // 회원가입
+    // 1. 회원가입
     @PostMapping("/")
     public void join(@RequestBody Member member){
         memberService.addMember(member);
     }
 
-    // 예약 상태 변경 (예약취소)
+    // 2. 예약 상태 변경 (예약취소)
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("/cancel/{resID}")
     public void cancelReservation(@PathVariable Long resID, @RequestBody Map<String,String> reason){
@@ -36,21 +35,21 @@ public class MemberController {
         memberService.cancelRes(resID, reason.get("reason"));
     }
 
-    // 나의 예약내역 조회
+    // 3. 예약내역 조회
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/reslist")
     public List<Reservation> getMemberReservations(@RequestBody Long memberId){
         return memberService.getMemberRes(memberId);
     }
 
-    // 예약 상세 내역 조회
+    // 4. 예약 상세 내역 조회
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/res/{resID}")
     public Reservation getDetailMyRes(@PathVariable(name = "resID") Long resID){
         return memberService.getResDetail(resID);
     }
 
-    // 예약번호로 리뷰글 번호 찾기
+    // 5. 예약번호로 리뷰글 번호 찾기
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/review/{resId}")
     public Map<String, Long> getReviewNo(@PathVariable Long resId){
@@ -58,7 +57,7 @@ public class MemberController {
         return memberService.getReviewNo(resId);
     }
 
-    // 회원정보 수정 페이지 들어가기 전 비밀번호 인증
+    // 6. 회원정보 수정 페이지 들어가기 전 비밀번호 인증
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/verify")
     public Map<String, String> memberPwAuth(@RequestBody Map<String, Object> member){
@@ -71,7 +70,7 @@ public class MemberController {
         return map;
     }
 
-    // 회원정보 조회
+    // 7. 회원정보 조회
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{memberId}")
     public Map<String, Member> getMember(@PathVariable Long memberId){
@@ -82,7 +81,7 @@ public class MemberController {
         return map;
     }
 
-    // 회원정보 수정
+    // 8. 회원정보 수정
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("/{memberId}")
     public Map<String, Member> modifyMember(@PathVariable Long memberId, @RequestBody Member member){
@@ -93,7 +92,7 @@ public class MemberController {
         return map;
     }
 
-    // 회원 탈퇴(삭제)
+    // 9. 회원 탈퇴 (상태 변경)
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/withdraw")
     public Map<String, String> withdraw(@RequestBody Map<String, Object> member){

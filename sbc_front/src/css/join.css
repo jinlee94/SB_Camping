@@ -25,9 +25,10 @@ input[type="checkbox"] {
     width: 250px;
     padding: 10px;
     margin-bottom: 100px;
+    color: white;
     background: darkslategrey;
-    border: 1px solid darkslategrey;
 }
+
 
 
 /* 회원가입 정보 입력 */
@@ -57,6 +58,8 @@ input[type="checkbox"] {
 .joinButton button{
     width: 250px;
     padding: 10px;
+    color: white;
+    background: darkslategrey;
 }
 
 
