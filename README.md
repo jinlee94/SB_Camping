@@ -58,10 +58,10 @@
 
 ### 💻 EMAIL
 
-- 반주연 : <ukalliope@gmail.com>
-- 이효진 : <leehyo9493@naver.com>
-- 정상호 : <fkvmxpf94@gmail.com>
-- 피성표 : <pisungpyo@naver.com>
-- 하경민 : <xzxz2563@gmail.com>
+- 반주연 : 관리자 - 회원관리, 통계관리, 공통 - 문의게시판 <ukalliope@gmail.com>
+- 이효진 : 사용자 - 로그인, 회원가입, 예약 조회 & 취소, 회원정보 <leehyo9493@naver.com>
+- 정상호 : 관리자 - 구역 관리, 예약 관리, 예약 캘린더, 공통 - 공지 게시판<fkvmxpf94@gmail.com>
+- 피성표 : 사용자 - 캠핑장 소개, 캠퍼 게시판<pisungpyo@naver.com>
+- 하경민 : 사용자 - 실시간 예약, 리뷰게시판 <xzxz2563@gmail.com>
 
 <br />
