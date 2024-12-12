@@ -14,7 +14,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Integer countByMemberEmail(String memberEmail);
 
     // 핸드폰 번호 중복체크 (회원가입)
-    Boolean existsByMemberPhone(String phone);
+    Integer countByMemberPhone(String phone);
 
     // 이름 & 핸드폰 번호로 회원 확인 (이메일 찾기)
     Member findByMemberNameAndMemberPhone(String memberName, String memberPhone);

@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface MemberService {
-    void addMember(Member member);
     Member updateMember(Member member);
     Member getMember(Long memberId);
     String authPw(Long memberId, String memberPw);

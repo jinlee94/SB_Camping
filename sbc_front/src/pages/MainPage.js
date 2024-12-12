@@ -59,7 +59,8 @@ const MainPage = () => {
                 <Carousel.Item>
                     <div id='slider2'>
                         <div className='slider2_text'>
-                            <h2>도덕산의 아름다운 풍경과 함께 하세요</h2>
+                            <h2>일상 속 힐링타임</h2>
+                            <h5>도덕산의 아름다운 풍경과 함께 하세요</h5>
                         </div>
                     </div>
                 </Carousel.Item>

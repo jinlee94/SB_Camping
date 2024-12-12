@@ -20,14 +20,10 @@ public class LoginController {
 
     private final LoginService loginService;
 
-    // 1. 핸드폰번호 중복체크
-    @GetMapping("/phone")
-    public Map<String, Object> phoneCheck(@RequestParam String phone){
-        log.info("-------------- 핸드폰번호 중복 체크 메소드");
-        Boolean result = loginService.phoneCheck(phone);
-        Map<String, Object> map = new HashMap<>();
-        map.put("msg", result);
-        return map;
+    // 1. 회원가입
+    @PostMapping("/")
+    public void join(@RequestBody Member member){
+        loginService.addMember(member);
     }
 
     // 2. 이메일 중복체크
@@ -40,7 +36,18 @@ public class LoginController {
         return map;
     }
 
-    // 3. 이메일 찾기 (회원명 + 회원 핸드폰번호)
+    // 3. 핸드폰번호 중복체크
+    @GetMapping("/phone")
+    public Map<String, Object> phoneCheck(@RequestParam String phone){
+        log.info("-------------- 핸드폰번호 중복 체크 메소드{}", phone);
+        int result = loginService.phoneCheck(phone);
+        Map<String, Object> map = new HashMap<>();
+        log.info("핸드폰 중복체크 : " + result);
+        map.put("msg", result);
+        return map;
+    }
+
+    // 4. 이메일 찾기 (회원명 + 회원 핸드폰번호)
     @PostMapping("/email/retrieve")
     public Map<String,String> findEmailByNameAndPhone(@RequestBody Member member){
         log.info("-----------------이메일 찾기 메소드");
@@ -50,7 +57,7 @@ public class LoginController {
         return map;
     }
 
-    // 4. 비밀번호 찾기 - 회원 확인 (회원명 + 회원이메일)
+    // 5. 비밀번호 찾기 - 회원 확인 (회원명 + 회원이메일)
     @PostMapping("/password/retrieve")
     public ResponseEntity<Member> findMemberByNameAndEmail(@RequestBody Member member){
         log.info("--------------비밀번호 찾기 - 회원명 + 이메일로 회원 찾기 메소드");
@@ -58,8 +65,8 @@ public class LoginController {
         return ResponseEntity.ok(memResult);
     }
 
-    // 5. 비밀번호 찾기 - 이메일 보내기
-    @GetMapping("/password/sendemail")
+    // 6. 비밀번호 찾기 - 이메일 보내기
+    @GetMapping("/password/sendmail")
     public Map<String, String> sendEmail(@RequestParam String email){
         log.info("----------- 이메일 전송 메소드");
         String code;
@@ -76,7 +83,7 @@ public class LoginController {
         return map;
     }
 
-    // 6. 비밀번호 변경
+    // 7. 비밀번호 변경
     @PostMapping("/password/update")
     public Map<String, String> modifyPw(@RequestBody Member member){
         log.info("--------------비밀번호 변경 메소드");

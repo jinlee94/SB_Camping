@@ -45,15 +45,23 @@ const AuthNameAndEmail = ({onSuccess}) => {
             if(!action){
                 alert('회원을 찾을 수 없습니다. 이름 또는 이메일을 다시 확인해주세요.')
             } else if(action){
-                const result = await sendEmail(member.memberEmail);
-                if(result.msg === '전송'){
-                    setSendingCode(result.code)
-                    setShowModal(true); // 모달 열기
-                }
+                setShowModal(true); // 모달 열기
             }
-        }catch (err){
+        } catch (err){
             console.log('요청 오류')
             alert('회원을 찾을 수 없습니다. 이름 또는 이메일을 다시 확인해주세요.')
+        }
+    }
+
+    // 인증 메일 발송
+    const handleSendEmail = async () => {
+        try{
+            const result = await sendEmail(member.memberEmail);
+            if(result.msg === '전송'){
+                setSendingCode(result.code)
+            }
+        }catch(err){
+            console.log('요청 오류');
         }
     }
 
@@ -110,14 +118,15 @@ const AuthNameAndEmail = ({onSuccess}) => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group>
-                            <Form.Label>인증번호</Form.Label>
+                        <Form.Group className="d-flex align-items-center">
+                            <Button className="w-60 me-2" onClick={handleSendEmail}>메일 발송하기</Button>
                             <Form.Control
                                 type="text"
                                 value={authCode}
                                 onChange={handleAuthCodeChange}
-                                placeholder="인증번호를 입력하세요"
+                                placeholder="인증번호 입력 후 확인 버튼을 눌러주세요"
                             />
+                            
                         </Form.Group>
                     </Form>
                 </Modal.Body>

@@ -222,7 +222,7 @@ const JoinInputPage = () => {
     * */
 
     // 폼에서 데이터가 입력되었을 때마다 members 상태를 업데이트하는 함수
-    const handleChangeJoin = (event) => {
+    const handleChangeJoin = async (event) => {
         // members 업데이트
         const { name, value } = event.target;
         setMembers((prevParams) => ({
@@ -260,12 +260,12 @@ const JoinInputPage = () => {
             const phoneNumber = event.target.value;
             const regExp = /^010-?([0-9]{4})-?([0-9]{4})$/;
             if(regExp.test(phoneNumber)){
-                const result = phoneCheck(phoneNumber);
-                //console.log('핸드폰 체크 : ' , result);
-                if(!result.msg){ // 해당 핸드폰 번호가 존재하는가? false면 사용 가능
-                    setIsPhoneValid(true);
-                } else { // true면 이미 존재하는 핸드폰 번호
+                const result = await phoneCheck(phoneNumber);
+                console.log('핸드폰 체크 : ' , result.msg);
+                if(result.msg == "1"){ // 해당 핸드폰 번호가 이미 존재하는가?
                     setIsPhoneValid(false);
+                } else {
+                    setIsPhoneValid(true);
                 }
             } else{
                 setIsPhoneValid(false);

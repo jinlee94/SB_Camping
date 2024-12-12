@@ -96,7 +96,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         }
 
         // 회원가입 요청 경로 예외
-        if (path.equals("/api/member/")) {
+        if (path.equals("/api/members/")) {
             return true;
         }
 

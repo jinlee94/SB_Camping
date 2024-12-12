@@ -28,7 +28,7 @@ export const joinPost = async (member) => {
     const header = {
         headers:{'Content-Type': 'application/json'}
     }
-    const result = await axios.post(`${host}/members/`, JSON.stringify(member), header);
+    const result = await axios.post(`${host}/auth/`, JSON.stringify(member), header);
     console.log(result);
     return result.data;
 }
@@ -44,7 +44,7 @@ export const emailCheck = async (email) => {
 // 핸드폰번호 중복 체크 요청
 export const phoneCheck = async (phone) => {
     const res = await axios.get(`${host}/auth/phone`, {params: {phone}});
-    console.log(res);
+    console.log("api 핸드폰 중복체크" + res);
     return res.data;
 }
 

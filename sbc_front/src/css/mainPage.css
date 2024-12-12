@@ -1,4 +1,6 @@
 /* 메인 사진 */
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&display=swap');
+
 #slider1 {
     height: 520px;
     background-image: url(https://images.pexels.com/photos/1539225/pexels-photo-1539225.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1);
@@ -22,6 +24,9 @@
 }
 
 #slider1 h2{
+    font-family: "Nanum Brush Script", cursive;
+    font-weight: 400;
+    font-size: 70px;
     text-align: center;
     color: white;
 }
@@ -35,9 +40,16 @@
     margin-left: 30%;
     text-shadow: 1px 0px 5px grey;
 }
+
+#slider2 h2{
+    font-family: "Nanum Brush Script", cursive;
+    font-weight: 400;
+    font-size: 70px;
+    text-align: center;
+    color: white;
+}
 .slider2_text{
-    margin-left: 20%;
-    margin-bottom: 10%;
+    margin-left: 25%;
     color: white;
     text-shadow: 1px 0px 5px grey;
 }

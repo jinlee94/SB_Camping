@@ -127,14 +127,6 @@ public class MemberServiceImpl implements MemberService {
         return msg;
     }
 
-    // 회원 등록
-    @Override
-    public void addMember(Member member) {
-        String pw = passwordEncoder.encode(member.getMemberPw());
-        member.changePw(pw);
-        memberRepository.save(member);
-    }
-
     // 회원 정보 수정
     @Override
     public Member updateMember(Member newMember) {
