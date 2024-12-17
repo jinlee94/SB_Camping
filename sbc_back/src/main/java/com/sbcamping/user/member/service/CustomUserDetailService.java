@@ -25,7 +25,7 @@ public class CustomUserDetailService implements UserDetailsService {
         log.info("=========================================loadUserByUsername 도착");
         log.info("=========================================username: " + username);
 
-        Member member = memberRepository.findByMemberEmail(username);
+        Member member = memberRepository.findByMemberEmail(username).get();
 
         log.info("======================member role : " + member.getMemberRole());
 
@@ -39,7 +39,8 @@ public class CustomUserDetailService implements UserDetailsService {
                 member.getMemberLocal(),
                 member.getMemberRole(),
                 member.getMemberID(),
-                member.getMemberStatus()
+                member.getMemberStatus(),
+                member.getIsSocial()
         );
 
         //log.info(memberDTO.toString());

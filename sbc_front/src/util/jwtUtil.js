@@ -8,7 +8,8 @@ const jwtAxios = axios.create();
 const refreshJWT = async (accessToken, refreshToken) => {
     try {
         const headers = {
-            "Authorization": `Bearer ${accessToken}, ${refreshToken}`,
+            "Authorization": `Bearer ${accessToken}`, 
+            "X-Refresh-Token" : `${refreshToken}`,
         };
         const res = await axios.get(`http://localhost:8080/api/auth/refresh`, {headers});
         console.log("refreshJWT-------------" + res.data);
@@ -21,9 +22,9 @@ const refreshJWT = async (accessToken, refreshToken) => {
 
 // 요청 전
 const beforeRequest = (config) => {
-    console.log("■ before request")
+    // console.log("■ before request")
     const memberInfo = JSON.parse(getCookie("memberCookie"));
-    console.log(memberInfo)
+    // console.log(memberInfo)
     if(!memberInfo){
         console.log("Member Coookie NOT FOUND")
         return Promise.reject({
@@ -40,14 +41,14 @@ const beforeRequest = (config) => {
 
 // 요청 실패
 const requestFail = (err) => {
-    console.log("■ requset error")
+    // console.log("■ requset error")
     return Promise.reject(err);
 }
 
 // 응답 전
 const beforeResponse = async (res) => {
-    console.log("■ before response")
-    console.log(res)
+    // console.log("■ before response")
+    // console.log(res)
 
     const data = res.data;
 
@@ -74,7 +75,7 @@ const beforeResponse = async (res) => {
 
 // 응답 실패
 const responseFail = (err) => {
-    console.log("■ response fail error")
+    // console.log("■ response fail error")
     return Promise.reject(err);
 }
 

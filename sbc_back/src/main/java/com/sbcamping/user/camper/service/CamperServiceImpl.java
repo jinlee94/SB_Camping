@@ -254,7 +254,7 @@ public class CamperServiceImpl implements CamperService {
         Map<String, Object> claims = JWTUtil.validateToken(refreshToken);
         Map<String, Object> memberClaims = (Map<String, Object>) claims.get("member");
         String memberEmail = (String) memberClaims.get("memberEmail");
-        return memberRepository.findByMemberEmail(memberEmail);
+        return memberRepository.findByMemberEmail(memberEmail).get();
     }
 
     @Override

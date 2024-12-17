@@ -84,7 +84,7 @@ const ReviewListComponent = () => {
                 setResData(data)
                 console.log(data)
             }).catch(error => {
-            console.log("오류뜸 ㅜㅜ")
+            //console.log("오류뜸 ㅜㅜ")
         })
     }, [refresh])
 

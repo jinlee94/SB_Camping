@@ -3,10 +3,6 @@ import axios from "axios";
 const API_SERVER_HOST = 'http://localhost:8080';
 const host = `${API_SERVER_HOST}/api`
 
-const rest_api_key = `9ee86052c294ac349a0fe4f3546cc55a`
-const redirect_uri = `http://localhost:3000/login/kakao`
-const auth_code_path = `https://kauth.kakao.com/oauth/authorize`
-const access_token_url = `https://kauth.kakao.com/oauth/token`
 
 // 로그인(POST) 요청
 export const loginPost = async (loginParam) => {

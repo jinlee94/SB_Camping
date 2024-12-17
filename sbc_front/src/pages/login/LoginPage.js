@@ -4,6 +4,7 @@ import '../../css/login.css'
 import {useState} from "react";
 import useCustomLogin from "../../hooks/useCustomLogin"
 import {useNavigate} from "react-router-dom";
+import KakaoLoginComponent from "../../components/member/KakaoLoginComponent";
 
 const LoginPage = () => {
 
@@ -55,8 +56,8 @@ const LoginPage = () => {
                         {/*        정보 저장하기</label>*/}
                         {/*</div>*/}
                         <div className="btn-box">
-                            <button onClick={handleClickLogin} className={"loginbutton_default"}>로그인</button>
-                            <br></br>
+                            <button onClick={handleClickLogin} className={"loginbutton_default"}>로그인</button><br></br>
+                            <KakaoLoginComponent/>
                         </div>
                     </form>
                 </div>

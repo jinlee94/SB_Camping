@@ -25,6 +25,7 @@
 .btn-box{
     text-align: center;
     margin: 0 auto;
+    max-width: 305px;
 }
 .loginbutton_default{
     margin: 5px;
@@ -41,7 +42,9 @@
     cursor: pointer;
     border: 1px solid #457575;
 }
-
+.kakao_button{
+    cursor: pointer;
+}
 /* ~ 찾기 */
 .findwrap{
     max-width: 400px;

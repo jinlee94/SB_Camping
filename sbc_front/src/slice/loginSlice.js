@@ -6,7 +6,8 @@ import {getCookie, removeCookie, setCookie} from "../util/cookieUtil";
 
 const initState = {
     member : {
-        memberEmail: ''
+        memberEmail: '',
+        isSocial:'',
     },
 }
 
@@ -34,6 +35,12 @@ const loginSlice = createSlice({
     name: 'loginSlice',
     initialState : loadMemberCookie() || initState, // 쿠키가 없으면 초기값 사용
     reducers : {
+        login : (state, action) => {
+            console.log("카카오 로그인")
+            const payload = action.payload;
+            setCookie("memberCookie", JSON.stringify(payload), 1)
+            return payload;
+        },
         logout : (state, action) => {
             removeCookie("memberCookie") // 쿠키 삭제
             state.member.memberEmail = '';
@@ -55,6 +62,7 @@ const loginSlice = createSlice({
                     console.log('쿠키 저장');
                     state.member.memberEmail = payload.member.memberEmail;
                     state.member.memberRole = payload.member.memberRole;
+                    state.member.isSocial = payload.member.isSocial;
                 }
             }
             return state; // 기본 상태 반환

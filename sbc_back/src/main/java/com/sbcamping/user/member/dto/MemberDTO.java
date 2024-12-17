@@ -24,9 +24,11 @@ public class MemberDTO extends User {
     private String memberRole;
     private Long memberId;
     private String memberStatus;
+    private String isSocial;
 
-    // 생성자
-    public MemberDTO(String email, String memberPw, String memberName, String memberPhone, char memberGender, String memberBirth, String memberLocal, String memberRole, Long memberId, String memberStatus) {
+    // 일반회원용 DTO
+    public MemberDTO(String email, String memberPw, String memberName, String memberPhone, char memberGender, String memberBirth, String memberLocal,
+                     String memberRole, Long memberId, String memberStatus, String isSocial) {
         super(email, memberPw, Arrays.asList(new SimpleGrantedAuthority(memberRole)));
         this.memberEmail = email;
         this.memberPw = memberPw;
@@ -38,6 +40,18 @@ public class MemberDTO extends User {
         this.memberRole = memberRole;
         this.memberId = memberId;
         this.memberStatus = memberStatus;
+        this.isSocial = isSocial;
+    }
+
+    // 카카오 회원용 DTO
+    public MemberDTO(String email, String memberPw, String isSocial, String memberRole, String memberStatus, Long memberId){
+        super(email, memberPw, Arrays.asList(new SimpleGrantedAuthority(memberRole)));
+        this.memberEmail = email;
+        this.memberPw = memberPw;
+        this.isSocial = isSocial;
+        this.memberRole = memberRole;
+        this.memberStatus = memberStatus;
+        this.memberId = memberId;
     }
 
 }

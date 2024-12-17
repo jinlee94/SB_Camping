@@ -32,24 +32,27 @@ public class Member {
     @Column(name = "Member_Password", length = 200, nullable = false)
     private String memberPw;        // 회원 비밀번호
 
-    @Column(length = 10, nullable = false)
+    @Column(length = 10)
     private String memberName;      // 회원 명
 
-    @Column(length = 11, nullable = false, unique = true)
+    @Column(length = 11, unique = true)
     private String memberPhone;     // 회원 핸드폰번호
 
-    @Column(nullable = false, length = 1)
+    @Column(length = 1)
     private char memberGender;      // 회원 성별
 
-    @Column(length = 8, nullable = false)
+    @Column(length = 8)
     private String memberBirth;     // 회원 생년월일
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 30)
     private String memberLocal;     // 회원 지역
 
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private LocalDate memberRegDate; // 회원 등록일
+    
+    @Column
+    private LocalDate memberLeaveDate; // 회원 탈퇴일
 
     @Column(nullable = false, length = 3, columnDefinition = "CHAR(3)")
     @Builder.Default
@@ -58,6 +61,10 @@ public class Member {
     @Column(length = 10, nullable = false)
     @Builder.Default
     private String memberRole = "ROLE_USER"; // 회원 권한
+
+    @Column(length = 2, nullable = false)
+    @Builder.Default
+    private String isSocial = "N"; // 소셜회원 여부
 
     // 권한을 리스트 형태로 변환하는 메서드
     public List<String> getMemberRolesAsList(String memberRole) {

@@ -25,6 +25,7 @@ const MypageModPwPage = () => {
         memberID: loginState.member.memberId,
         memberPw: '',
     })
+    const isSocial = loginState.member.isSocial;
 
     /* 비밀번호 입력 */
     const handleChange = (event) => {
@@ -100,6 +101,7 @@ const MypageModPwPage = () => {
                 <h3>비밀번호 변경</h3>
                 <hr></hr>
             </div>
+            {isSocial=='N' ? 
             <div id="loginwrap">
 
                 <div className="modPwWrap">
@@ -152,6 +154,7 @@ const MypageModPwPage = () => {
                     </Form>
                 </div>
             </div>
+            : <div className="flex flex-col items-center justify-center text-center mt-5">소셜회원은 비밀번호 변경 기능이 없습니다.</div>}
         </>
     )
 }

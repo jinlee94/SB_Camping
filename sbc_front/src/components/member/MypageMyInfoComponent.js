@@ -10,6 +10,7 @@ import "../../css/join.css";
 import "../../css/login.css";
 import {getMember, modifyMember} from "../../api/mypageApi";
 import {useNavigate} from "react-router-dom";
+import { phoneCheck } from "../../api/memberApi";
 
 {/* 비밀번호 인증 컴포넌트 */}
 const PasswordAuth = ({onSuccess}) => {
@@ -20,8 +21,9 @@ const PasswordAuth = ({onSuccess}) => {
     const memberState = {
         memberID : loginState.member.memberId,
         memberPw : '',
+        isSocial : loginState.member.isSocial,
     }
-    console.log('ddd', loginState.member.memberId)
+    // console.log('Id확인', loginState.member.memberId)
     const [member, setMember] = useState(memberState);
     const [pwd, setPwd] = useState("");
     const [isPwdValid, setIsPwdValid] = useState(true);
@@ -49,10 +51,10 @@ const PasswordAuth = ({onSuccess}) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(member);
+        // console.log(member);
         try {
             authPw(member).then((data) => {
-                console.log(data);
+                // console.log(data);
                 if(data.msg === 'success'){
                     onSuccess();
                 } else if(data.msg === 'fail'){
@@ -64,6 +66,12 @@ const PasswordAuth = ({onSuccess}) => {
             console.log('서버오류')
         }
     }
+
+    useEffect (() => {
+        if(memberState.isSocial == "Y"){
+            onSuccess();
+        }
+    })
 
     return(
         <>
@@ -127,6 +135,7 @@ const MemberInfo = () => {
 
     const loginState = useSelector((state) => state.loginSlice)
     const loginMemberId = loginState.member.memberId;
+    const isSocial = loginState.member.isSocial;
 
     // 부트스트랩 변수
     const [validated, setValidated] = useState(false);
@@ -146,7 +155,7 @@ const MemberInfo = () => {
 
     useEffect(() => {
         getMember(loginMemberId).then((data) => {
-            console.log('member 조회 결과 : ', data);
+            // console.log('member 조회 결과 : ', data);
             setMembers({
                 memberEmail: data.member.memberEmail,
                 memberName: data.member.memberName,
@@ -175,13 +184,9 @@ const MemberInfo = () => {
     // 지역 유효성 검사용 변수
     const [local, setLocal] = useState(members.memberLocal);
     const [isLocalValid, setIsLocalValid] = useState(true);
-    // 비밀번호 검사용 변수
-    const [pwd, setPwd] = useState("");
-    const [isPwdValid, setIsPwdValid] = useState(true);
-    const [isPwdMatch, setIsPwdMatch] = useState(true);
 
 
-    // 회원정보 수정 버튼 눌렀을 때 동작
+    /* 회원정보 수정 버튼 눌렀을 때 동작 */
     const handleSubmit = (event) => {
         const form = event.currentTarget;
         event.preventDefault();
@@ -189,27 +194,20 @@ const MemberInfo = () => {
 
         let valid = true; // 유효성 검사 결과를 추적할 변수
 
-        console.log('memberpw : ', members.memberPw)
-
-        // if(!members.memberPw) {
-        //     setIsPwdValid(true);
-        //     setIsPwdMatch(true);
-        // }
-
         // 이름
-        if(isNameValid === false){
+        if(isNameValid === false || members.memberName == ''){
             valid = false;
             event.preventDefault()
         }
 
         // 핸드폰 번호
-        if(isPhoneValid == false ){
+        if(isPhoneValid == false || members.memberPhone == ''){
             valid = false;
             event.preventDefault()
         }
 
-        // 라디오 버튼 선택 여부
-        if (!gender) {
+        // 성별 버튼 선택 여부
+        if (!gender || gender == '' || members.memberGender =='') {
             setIsGenderValid(false);
             valid = false;
             event.preventDefault();
@@ -218,20 +216,23 @@ const MemberInfo = () => {
         }
 
         // 생년월일
-        if(!isMemBirthValid){
+        if(!isMemBirthValid || members.memberBirth == ''){
             valid = false;
+            setIsMemBirthValid(false);
             event.preventDefault();
         }
 
         // 지역 선택 여부
-        if (local === ""){
+        if (!local || local === '선택해주세요'){
             valid = false;
             setIsLocalValid(false);
             event.preventDefault();
         }
 
+        console.log("local : ", local)
+
         // 부트스트랩 동작
-        if (form.checkValidity() === false || !valid) {
+        if (form.checkValidity() === false || valid === false ) {
             event.stopPropagation();
         } else{
             const confirm = window.confirm('수정하시겠습니까?')
@@ -240,18 +241,17 @@ const MemberInfo = () => {
                 handleClickModify(members)
             }
         }
-        setValidated(true);
     };
 
 
     // 유효성 검사를 모두 통과하면 API 수정 요청
     const handleClickModify = async (members) => {
         try {
-            //console.log('회원정보 수정 보내기 전 :' , members)
+            // console.log('회원정보 수정 보내기 전 :' , members)
             const action = await modifyMember(members);
-            //console.log('회원정보수정 결과 : ', action)
+            // console.log('회원정보수정 결과 : ', action)
             if(action.error) {
-                //console.log('회원정보 수정 실패 ', action.error)
+                // console.log('회원정보 수정 실패 ', action.error)
                 alert('회원정보 수정에 실패하였습니다.')
             } else {
                 alert('회원정보가 수정되었습니다.')
@@ -264,26 +264,13 @@ const MemberInfo = () => {
 
 
     // 폼에서 데이터가 입력되었을 때마다 members 상태를 업데이트하는 함수
-    const handleChangeMod = (event) => {
+    const handleChangeMod = async (event) => {
         // members 업데이트
         const { name, value } = event.target;
         setMembers((prevParams) => ({
             ...prevParams,
             [name]: value,
         }));
-
-        // // 비밀번호 유효성 검사
-        // if (name === 'memberPw') {
-        //     const newPassword = event.target.value;
-        //     const regExp = /^(?=.*[a-z])((?=.*\d)|(?=.*\W)).{10,15}$/;
-        //     if (regExp.test(newPassword)) {
-        //         setPwd(newPassword);
-        //         setIsPwdValid(true);
-        //     }   else {
-        //         setIsPwdValid(false);
-        //     }
-        //
-        // }
 
         // 이름 값 검사
         if(name === 'memberName'){
@@ -300,12 +287,18 @@ const MemberInfo = () => {
         // 핸드폰 번호 검사
         if (name === 'memberPhone'){
             const phoneNumber = event.target.value;
-            const regExp = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
+            const regExp = /^010-?([0-9]{4})-?([0-9]{4})$/;
             if(regExp.test(phoneNumber)){
-                setIsPhoneValid(true);
-            } else{
-                setIsPhoneValid(false);
-            }
+                            const result = await phoneCheck(phoneNumber);
+                            console.log('핸드폰 체크 : ' , result.msg);
+                            if(result.msg == "1"){ // 해당 핸드폰 번호가 이미 존재하는가?
+                                setIsPhoneValid(false);
+                            } else {
+                                setIsPhoneValid(true);
+                            }
+                        } else{
+                            setIsPhoneValid(false);
+                        }
         }
 
         // 생년월일 검사
@@ -340,18 +333,6 @@ const MemberInfo = () => {
 
     };
 
-
-    /* 비밀번호 일치 재확인 */
-    // const handleConfirmPwd = (event) => {
-    //     const confirmPwd = event.target.value;
-    //     setIsPwdMatch(confirmPwd === pwd);
-    //     if(pwd !== confirmPwd){
-    //         setIsPwdMatch(false);
-    //     } else {
-    //         setIsPwdMatch(true);
-    //     }
-    // }
-
     return (
 
         <div>
@@ -361,6 +342,7 @@ const MemberInfo = () => {
             <hr></hr>
             <div className={"modmemwrap"}>
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                {isSocial ? <div className="mb-3">✅소셜회원</div> : <p></p>}
                     {/* 이메일 */}
                     <Form.Group as={Row} className="mb-3" >
                         <Form.Label column sm={2}>
@@ -374,58 +356,6 @@ const MemberInfo = () => {
                             />
                         </Col>
                     </Form.Group>
-
-                    {/*/!* 비밀번호 *!/*/}
-
-                    {/*<Form.Group as={Row} className="mb-3" >*/}
-                    {/*    <Form.Label column sm={2}>*/}
-                    {/*        새 비밀번호*/}
-                    {/*    </Form.Label>*/}
-                    {/*    <Col sm={7}>*/}
-                    {/*        <Form.Control type="password"*/}
-                    {/*                      name="memberPw"*/}
-                    {/*                      placeholder="영문소문자, 숫자, 특수문자 포함 10-15자"*/}
-                    {/*                      required*/}
-                    {/*                      id={"password"}*/}
-                    {/*                      minLength={10}*/}
-                    {/*                      pattern="^(?=.*[a-z])((?=.*\\d)|(?=.*\\W)).{10,15}$"*/}
-                    {/*                      onChange={handleChangeMod}*/}
-                    {/*                      isInvalid={!isPwdValid}*/}
-                    {/*        />*/}
-                    {/*        <div style={{fontSize:'13px'}}>비밀번호를 <span style={{color:'red'}}>변경</span>하고 싶은 경우에만 입력해주세요</div>*/}
-                    {/*        /!**/}
-                    {/*        <Form.Control.Feedback type="invalid">*/}
-                    {/*            비밀번호를 확인해주세요.*/}
-                    {/*        </Form.Control.Feedback>*/}
-                    {/*        *!/*/}
-                    {/*    </Col>*/}
-                    {/*</Form.Group>*/}
-
-                    {/*/!* 비밀번호 재확인 *!/*/}
-                    {/*<Form.Group as={Row} className="mb-3" >*/}
-                    {/*    <Form.Label column sm={2}>*/}
-                    {/*        새 비밀번호 확인*/}
-                    {/*    </Form.Label>*/}
-                    {/*    <Col sm={7} id={"pwrebox"}>*/}
-                    {/*        <Form.Control type="password"*/}
-                    {/*                      placeholder="영문소문자, 숫자, 특수문자 포함 10-15자"*/}
-                    {/*                      required*/}
-                    {/*                      id={"password_re"}*/}
-                    {/*                      minLength={10}*/}
-                    {/*                      pattern="^(?=.*[a-z])((?=.*\\d)|(?=.*\\W)).{10,15}$"*/}
-                    {/*                      onChange={handleConfirmPwd}*/}
-                    {/*                      isInvalid={!isPwdMatch}*/}
-                    {/*        />*/}
-                    {/*        <div style={{fontSize: '13px'}}>비밀번호를 <span style={{color: 'red'}}>변경</span>하고 싶은 경우에만*/}
-                    {/*            입력해주세요*/}
-                    {/*        </div>*/}
-                    {/*        /!**/}
-                    {/*        <Form.Control.Feedback type="invalid">*/}
-                    {/*            비밀번호가 일치하지 않습니다.*/}
-                    {/*        </Form.Control.Feedback>*/}
-                    {/*        *!/*/}
-                    {/*    </Col>*/}
-                    {/*</Form.Group>*/}
 
                     {/* 이름 */}
                     <Form.Group as={Row} className="mb-3">
@@ -481,6 +411,7 @@ const MemberInfo = () => {
                                     label="남"
                                     name="memberGender"
                                     value={"M"}
+                                    required
                                     id="formHorizontalRadios1"
                                     checked={members.memberGender === 'M'}
                                     onChange={handleChangeMod}
@@ -491,6 +422,7 @@ const MemberInfo = () => {
                                     label="여"
                                     name="memberGender"
                                     value={"W"}
+                                    required
                                     id="formHorizontalRadios2"
                                     checked={members.memberGender === 'W'}
                                     onChange={handleChangeMod}
@@ -500,6 +432,11 @@ const MemberInfo = () => {
                                         성별을 선택해주세요
                                     </div>
                                 )}
+                                <Form.Control.Feedback type="invalid">
+                                    <div id="genderbox" style={{ color: "#dc3545", fontSize:"15px" }}>
+                                        성별을 선택해주세요
+                                    </div>
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
                     </fieldset>
@@ -577,7 +514,7 @@ const MemberInfo = () => {
 
 const MemberInfoPage = () => {
     const loginState = useSelector((state) => state.loginSlice)
-    console.log('loginState :' , loginState)
+    // console.log('loginState :' , loginState)
     const [showMemberInfo, setShowMemberInfo] = useState(false);
 
     const handleAuthSuccess = () => {

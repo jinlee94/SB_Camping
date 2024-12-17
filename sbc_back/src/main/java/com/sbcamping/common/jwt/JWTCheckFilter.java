@@ -56,8 +56,9 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             }
             Long memberId = (Long) claims.get("memberId");
             String memberStatus = (String) claims.get("memberStatus");
+            String isSocial = (String) claims.get("isSocial");
 
-            MemberDTO memberDTO = new MemberDTO(memberEmail, memberPw, memberName, memberPhone, memberGender, memberBirth, memberLocal, memberRole, memberId, memberStatus);
+            MemberDTO memberDTO = new MemberDTO(memberEmail, memberPw, memberName, memberPhone, memberGender, memberBirth, memberLocal, memberRole, memberId, memberStatus, isSocial);
 
             log.info("memberDTO.GetAuthorities() : {}", memberDTO.getAuthorities());
 

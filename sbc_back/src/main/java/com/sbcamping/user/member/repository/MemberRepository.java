@@ -4,11 +4,13 @@ import com.sbcamping.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     // 이메일로 회원 찾기
-    Member findByMemberEmail(String email);
+    Optional<Member> findByMemberEmail(String email);
 
     // 이메일 중복체크 (회원가입)
     Integer countByMemberEmail(String memberEmail);

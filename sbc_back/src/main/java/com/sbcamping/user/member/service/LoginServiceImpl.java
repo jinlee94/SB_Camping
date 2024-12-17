@@ -1,19 +1,29 @@
 package com.sbcamping.user.member.service;
 
 import com.sbcamping.domain.Member;
+import com.sbcamping.user.member.dto.MemberDTO;
 import com.sbcamping.user.member.repository.MemberRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.LinkedHashMap;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -27,6 +37,72 @@ public class LoginServiceImpl implements LoginService {
 
     // 이메일 보내기
     private final JavaMailSender mailSender;
+
+    // 카카오 로그인 호출
+    @Override
+    public Member getKakaoMember(String accessToken) {
+        // 사용자정의 메소드
+        String email = getEmailFromKakaoAccessToken(accessToken);
+        log.info("카카오 로그인 : {}", email);
+        Optional<Member> result = memberRepository.findByMemberEmail(email);
+        if(result.isPresent()){
+            log.info("카카오 로그인, 등록된 회원");
+            return result.get();
+        }
+        Member socialMember = makeSocialMember(email);
+        memberRepository.save(socialMember);
+        log.info("카카오 로그인, 신규 회원");
+        Member member = socialMember;
+
+        return member;
+    }
+
+    // 카카오 회원 등록
+    private Member makeSocialMember(String email) {
+        String tempPassword = passwordEncoder.encode(makeTmepPassword());
+        Member member = Member.builder().memberEmail(email).memberPw(tempPassword).memberName("소셜회원").memberRole("ROLE_USER").isSocial("Y").build();
+        return member;
+    }
+
+    // 카카오 회원가입시 임시비밀번호 생성
+    private String makeTmepPassword() {
+        StringBuffer buffer = new StringBuffer();
+        for(int i = 0; i < 10; i ++){
+            // 65부터 119까지의 ASCII 값을 무작위로 생성
+            buffer.append((char) ((int) (Math.random() * 55) +65));
+        }
+        return buffer.toString();
+    }
+
+    // 카카오 사용자 정보 요청
+    private String getEmailFromKakaoAccessToken(String accessToken) {
+        String kakaoGutUserURL = "https://kapi.kakao.com/v2/user/me";
+        if(accessToken == null){
+            throw new RuntimeException("Access Token is null");
+        }
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        UriComponents uriBuilder = UriComponentsBuilder.fromHttpUrl(kakaoGutUserURL).build();
+
+        ResponseEntity<LinkedHashMap> response = restTemplate.exchange(uriBuilder.toString(), HttpMethod.GET, entity, LinkedHashMap.class);
+
+        log.info("response : {}", response);
+
+        LinkedHashMap<String, LinkedHashMap> bodyMap = response.getBody();
+        log.info("bodyMap : {}", bodyMap);
+
+        LinkedHashMap<String, String> kakaoAccount = bodyMap.get("kakao_account");
+        log.info("kakaoAccount : " + kakaoAccount);
+
+        return kakaoAccount.get("email");
+
+    }
+
 
     // 회원명 + 이메일로 회원 찾기 (비밀번호 찾기 1)
     @Override

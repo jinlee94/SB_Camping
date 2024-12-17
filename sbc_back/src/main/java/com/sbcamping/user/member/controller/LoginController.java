@@ -1,6 +1,8 @@
 package com.sbcamping.user.member.controller;
 
+import com.sbcamping.common.jwt.JWTUtil;
 import com.sbcamping.domain.Member;
+import com.sbcamping.user.member.dto.MemberDTO;
 import com.sbcamping.user.member.service.LoginService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -91,5 +93,30 @@ public class LoginController {
         HashMap<String,String> map = new HashMap<>();
         map.put("msg",msg);
         return map;
+    }
+
+    // 카카오 로그인
+    @GetMapping("/kakao")
+    public Map<String, Object> getMemberFromKakao(String accessToken){
+        log.info("카카오 로그인 토큰 확인 : {}", accessToken.substring(10));
+        Member member = loginService.getKakaoMember(accessToken);
+        MemberDTO memberDTO = new MemberDTO(
+                member.getMemberEmail(),
+                member.getMemberPw(),
+                member.getIsSocial(),
+                member.getMemberRole(),
+                member.getMemberStatus(),
+                member.getMemberID()
+        );
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("member", memberDTO);
+
+        String jwtAccessToken = JWTUtil.generateToken(claims, 10);
+        String jwtRefreshToken = JWTUtil.generateToken(claims, 60*12);
+
+        claims.put("accessToken", jwtAccessToken);
+        claims.put("refreshToken", jwtRefreshToken);
+
+        return claims;
     }
 }

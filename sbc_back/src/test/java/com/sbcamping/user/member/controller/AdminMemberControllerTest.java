@@ -46,7 +46,7 @@ class AdminMemberControllerTest {
     @Test
     @DisplayName("회원 정보 가져오기")
     public void getMember(){
-        Member member = memberRepository.findByMemberEmail("test1234@gmail.com");
+        Member member = memberRepository.findByMemberEmail("test1234@gmail.com").get();
         System.out.println(member);
     }
 
