@@ -45,15 +45,13 @@ public class JWTUtil {
                     .parseClaimsJws(token)
                     .getBody(); // 토큰에 포함된 클레임 추출
             //log.info("--------validateToken claim : {}", claim);
-        } catch (MalformedJwtException e) { // 전달되는 토큰의 값이 유효하지 않을 때 발생
-            throw new CustomJWTException("MalFormed");
-        } catch (ExpiredJwtException e) { // 유효기간 초과
-            throw new CustomJWTException("Expired");
-        } catch (InvalidClaimException e) { // 클레임이 유효하지 않음
-            throw new CustomJWTException("Invalid");
+        } catch (MalformedJwtException e) { 
+            throw new CustomJWTException("토큰이 유효하지 않음");
+        } catch (ExpiredJwtException e) { 
+            throw new CustomJWTException("토큰 유효기간 초과");
+        } catch (InvalidClaimException e) {
+            throw new CustomJWTException("클레임 값이 비거나 유효하지 않음");
         } catch (JwtException e){
-            throw new CustomJWTException("JWT 사용자 정의 예외");
-        } catch (Exception e) {
             throw new CustomJWTException("JWT ERROR");
         }
         return claim;
