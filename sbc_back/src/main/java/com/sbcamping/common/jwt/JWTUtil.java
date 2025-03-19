@@ -53,6 +53,8 @@ public class JWTUtil {
             throw new CustomJWTException("클레임 값이 비거나 유효하지 않음");
         } catch (JwtException e){
             throw new CustomJWTException("JWT ERROR");
+        } catch (Exception e){
+            throw new CustomJWTException("JWT 검증 ERROR 또는 key 예외 ");
         }
         return claim;
     }
