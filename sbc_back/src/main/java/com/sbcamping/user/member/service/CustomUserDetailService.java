@@ -22,12 +22,10 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        log.info("=========================================loadUserByUsername 도착");
-        log.info("=========================================username: " + username);
+        log.info("=============loadUserByUsername 도착");
+        log.info("=============username: " + username);
 
         Member member = memberRepository.findByMemberEmail(username).get();
-
-        log.info("======================member role : " + member.getMemberRole());
 
         MemberDTO memberDTO = new MemberDTO(
                 member.getMemberEmail(),
@@ -42,8 +40,6 @@ public class CustomUserDetailService implements UserDetailsService {
                 member.getMemberStatus(),
                 member.getIsSocial()
         );
-
-        //log.info(memberDTO.toString());
 
         return memberDTO;
     }

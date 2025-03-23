@@ -58,7 +58,7 @@ const MypageWithdrawPage = () => {
             return
         }
 
-        const isConfirmed = window.confirm('정말 탈퇴하시겠습니까?');
+        const isConfirmed = window.confirm('정말 탈퇴하시겠습니까? 이메일 정보는 30일 후 삭제됩니다.');
         if (isConfirmed) {
             try {
                 const action = await withdraw(member)

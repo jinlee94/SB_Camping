@@ -1,69 +1,64 @@
 package com.sbcamping.common.jwt;
 
 import com.google.gson.Gson;
+import com.sbcamping.domain.Member;
+import com.sbcamping.user.member.dto.JwtMemberDTO;
 import com.sbcamping.user.member.dto.MemberDTO;
+import com.sbcamping.user.member.repository.MemberRepository;
+import com.sbcamping.user.member.service.CustomUserDetailService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
+@Configuration
+@RequiredArgsConstructor
 public class JWTCheckFilter extends OncePerRequestFilter {
 
     // front 에서 API 서버로 요청시 JWT 토큰 체크
     // 유효한 JWT 토큰인지 확인하는 필터 클래스
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
-        log.info("------------------------JWT 체크 필터");
+        log.info("------------------------JWT 유효성 체크 필터");
         String authHeaderStr = request.getHeader("Authorization");
         if (authHeaderStr == null) {
             log.info("-------요청이 jwtAxios 인지 확인해보세요");
         }
         try {
             String accessToken = authHeaderStr.substring(7);
+
             Map<String, Object> claims = JWTUtil.validateToken(accessToken); // 토큰 검증
             log.info("--------JWT Claims : {}", claims);
-
             // 사용자 정보 추출 (member 내부의 정보)
             Map<String, Object> memberClaims = (Map<String, Object>) claims.get("member");
-            String memberEmail = (String) memberClaims.get("memberEmail");
-            String memberPw = (String) memberClaims.get("memberPw");
-            String memberName = (String) memberClaims.get("memberName");
-            String memberPhone = (String) memberClaims.get("memberPhone");
-            char memberGender = memberClaims.get("memberGender").toString().charAt(0);
-            String memberBirth = (String) memberClaims.get("memberBirth");
-            String memberLocal = (String) memberClaims.get("memberLocal");
-            // authorities 필드가 List<Map<String, Object>> 형태인 경우 처리
-            String memberRole;
-            List<Map<String, Object>> authorities = (List<Map<String, Object>>) memberClaims.get("authorities");
-            String role = (String) memberClaims.get("memberRole");
-            if (authorities != null && !authorities.isEmpty()) {
-                // 첫 번째 권한의 authority 값 추출
-                memberRole = (String) authorities.get(0).get("authority");
-            } else if (role != null) {
-                memberRole = role;
-            } else {
-                throw new RuntimeException("권한 정보가 없습니다.");
-            }
             Long memberId = (Long) claims.get("memberId");
-            String memberStatus = (String) claims.get("memberStatus");
-            String isSocial = (String) claims.get("isSocial");
-
-            MemberDTO memberDTO = new MemberDTO(memberEmail, memberPw, memberName, memberPhone, memberGender, memberBirth, memberLocal, memberRole, memberId, memberStatus, isSocial);
-
-            log.info("memberDTO.GetAuthorities() : {}", memberDTO.getAuthorities());
+            String memberEmail = (String) memberClaims.get("memberEmail");
+            String memberName = (String) memberClaims.get("memberName");
+            String memberStatus = (String) memberClaims.get("memberStatus");
+            String memberRole = (String) memberClaims.get("memberRole");
+            String isSocial = (String) memberClaims.get("isSocial");
+            JwtMemberDTO jwtMemberDTO = new JwtMemberDTO(memberId,memberEmail,memberName,memberRole,memberStatus,isSocial);
 
             // 인증 객체 생성(사용자 정보와 권한)
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberDTO, memberPw, memberDTO.getAuthorities());
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(jwtMemberDTO,null, Arrays.asList(new SimpleGrantedAuthority(memberRole)));
             // 사용자의 인증 상태 저장 (인증 완료)
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             filterChain.doFilter(request, response);
@@ -78,7 +73,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         }
     }
 
-    // 토큰 체크 예외 설정
+    // 토큰 필터 제외 설정
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         // preflight 요청은 체크하지 않음
@@ -92,52 +87,17 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         log.info("URL CHECK : {}", path);
 
         // api/auth/ 경로의 호출은 체크하지 않음 (로그인 요청할 때는 JWT 토큰이 없는 상태이기에 하는 설정)
-        if (path.startsWith("/api/auth")) {
+        if (path.startsWith("/api/auth") || path.equals("/api/members/")) {
             return true;
         }
 
-        // 회원가입 요청 경로 예외
-        if (path.equals("/api/members/")) {
+        // 캠퍼 게시판 검색, 리스트, 상세, 댓글
+        if (path.equals("/api/campers/search") || path.equals("/api/campers/list") || path.matches("^/api/campers/\\d+$") || path.matches("^/api/campers/comments/\\d+$")) {
             return true;
         }
 
-        // 캠퍼 검색
-        if (path.equals("/api/campers/search")) {
-            return true;
-        }
-
-        // 캠퍼리스트
-        if (path.equals("/api/campers/list")) {
-            return true;
-        }
-
-        // 캠퍼리스트 상세
-        if (path.matches("^/api/campers/\\d+$")) {
-            return true;
-        }
-
-        // 캠퍼리스트 댓글 목록
-        if (path.matches("^/api/campers/comments/\\d+$")) {
-            return true;
-        }
-
-        // 리뷰 게시판 검색
-        if (path.equals("/api/review/search")) {
-            return true;
-        }
-
-        // 리뷰 게시판 리스트
-        if (path.equals("/api/review/list")) {
-            return true;
-        }
-
-        // 나의 예약 내역 확인하기
-        if (path.equals("/api/review/reviewCheck")) {
-            return true;
-        }
-
-        // 리뷰 게시판 상세
-        if (path.matches("^/api/review/read/\\d+$")) {
+        // 리뷰 게시판 검색, 리스트, 상세, 예약리스트
+        if (path.equals("/api/review/search") || path.equals("/api/review/list") || path.matches("^/api/review/read/\\d+$") || path.equals("/api/review/reviewCheck")) {
             return true;
         }
 
@@ -151,46 +111,17 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             return true;
         }
 
-        //공지리스트 비회원도 볼 수 있게끔
-        if (path.equals("/notices/list")) {
-            return true;
-        }
-        //공지리스트 비회원도 볼 수 있게끔
-        if (path.equals("/admin/notices/list")) {
-            return true;
-        }
-
-        //공지 내용 비회원도 볼 수 있게끔
-        if (path.startsWith("/notices/read/")) {
-            return true;
-        }
-
-        //공지 내용 비회원도 볼 수 있게끔
-        if (path.startsWith("/admin/notices/read/")) {
+        //공지리스트, 상세 비회원도 볼 수 있게끔
+        if (path.equals("/notices/list") || path.equals("/admin/notices/list") || path.startsWith("/notices/read/") || path.startsWith("/admin/notices/read/")) {
             return true;
         }
 
         // 문의 게시판 검색
-        if (path.equals("/admin/qnas/search")) {
+        if (path.equals("/admin/qnas/search") || path.equals("/admin/qnas/list") || path.matches("^/admin/qnas/\\d+$") || path.matches("^/admin/qnas/\\d+/comments/list$")) {
             return true;
         }
 
-        // qna list
-        if (path.equals("/admin/qnas/list")) {
-            return true;
-        }
-
-        // qna read
-        if (path.matches("^/admin/qnas/\\d+$")) {
-            return true;
-        }
-
-        // qna read comments
-        if (path.matches("^/admin/qnas/\\d+/comments/list$")) {
-            return true;
-        }
-
-        // 사진 보여주는거 허용
+        // 이미지 허용
         if (path.startsWith("/api/campers/view")) {
             return true;
         }
@@ -200,7 +131,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             return true;
         }
 
-        // 분실물
+        // 분실물 게시판
         if (path.startsWith("/api/lost")){
             return true;
         }

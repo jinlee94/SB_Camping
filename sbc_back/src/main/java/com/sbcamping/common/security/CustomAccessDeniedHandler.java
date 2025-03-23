@@ -18,10 +18,10 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         Gson gson = new Gson();
-        String jsonStr = gson.toJson(Map.of("error", "ERROR_ACCESSDENIED"));
+        String jsonStr = gson.toJson(Map.of("error", "ERROR_ACCESSDENIED")); // 권한 없음, 인증 X
 
         response.setContentType("application/json");
-        response.setStatus(HttpStatus.FORBIDDEN.value());
+        response.setStatus(HttpStatus.FORBIDDEN.value()); // 403 권한 부족
         PrintWriter out = response.getWriter();
         out.println(jsonStr);
         out.close();

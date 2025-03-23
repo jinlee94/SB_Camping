@@ -23,7 +23,7 @@ public class NoticeController {
     //불변 인스턴스변수 선언
     private final NoticeService noticeService;
 
-    // 메인페이지 공지 최신글
+    // 메인페이지 공지 최신글 3개
     @GetMapping("/main/list")
     public ResponseEntity<List<NoticeBoard>> getThreeNotices() {
         List<NoticeBoard> notices = noticeService.getLatestThreeNotices();

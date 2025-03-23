@@ -26,23 +26,22 @@ public class CustomSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        log.info("===================security Config=======================");
 
+        // cors 설정
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
-        // 세션 비활성화
-        http.sessionManagement(sessionConfig ->
-                sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        // 세션 비활성화 (쿠키 + JWT 사용할 예정이기 때문에) 
+        http.sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         // CSRF 비활성화
-        http.csrf(config -> config.disable());
+        http.csrf(csrf -> csrf.disable());
 
         // 로그인
         http.formLogin(form -> {
             form.loginPage("/api/auth/login"); // 로그인 요청 URL
-            form.successHandler(new APILoginSuccessHandler());
-            form.failureHandler(new APILoginFailHandler());
+            form.successHandler(new APILoginSuccessHandler()); // 로그인 성공시
+            form.failureHandler(new APILoginFailHandler()); // 로그인 실패시
         });
 
-        // JWT 체크
+        // JWT 필터를 추가 (위치는 UsernamePasswordAuthenticationFilter 앞)
         http.addFilterBefore(new JWTCheckFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // 접근 제한 예외 처리
@@ -55,9 +54,8 @@ public class CustomSecurityConfig {
     // CORS(Cross-Origin Resource Sharing : 추가 HTTP 헤더를 사용하여 한 출처에서 실행중인 웹 애플리케이션이 다른 출처의 선택한 자원에 접근할 수 있는 권한을 부여하도록 브라우저에 알려주는 체제
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // 프론트엔드 주소를 명시적으로 지정
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "X-Refresh-Token", "Cache-Control", "Content-Type"));

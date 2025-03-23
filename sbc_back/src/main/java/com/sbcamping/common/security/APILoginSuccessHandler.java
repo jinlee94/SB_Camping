@@ -3,6 +3,7 @@ package com.sbcamping.common.security;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sbcamping.common.jwt.JWTUtil;
+import com.sbcamping.user.member.dto.JwtMemberDTO;
 import com.sbcamping.user.member.dto.MemberDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,10 +26,11 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
         log.info("------------------■ 로그인 성공 onAuthenticationSuccess");
 
         MemberDTO memberDTO = (MemberDTO) authentication.getPrincipal();
+        JwtMemberDTO jwtMemberDTO = new JwtMemberDTO(memberDTO.getMemberId(), memberDTO.getMemberEmail(), memberDTO.getMemberName(), memberDTO.getMemberRole(), memberDTO.getMemberStatus(), memberDTO.getIsSocial());
 
         // 토큰 부여
         Map<String, Object> claims = new HashMap<>();
-        claims.put("member", memberDTO);  // memberDTO 객체 자체를 claims 에 추가
+        claims.put("member", jwtMemberDTO);  // memberDTO 객체 자체를 claims 에 추가
         String accessToken = JWTUtil.generateToken(claims, 10); // ACCESS TOKEN : 10분 유효
         String refreshToken = JWTUtil.generateToken(claims, 60 * 12); // REFRESH TOKEN : 12시간
         claims.put("accessToken", accessToken);

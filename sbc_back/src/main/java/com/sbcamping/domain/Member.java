@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -78,6 +79,8 @@ public class Member {
         }
     }
 
+    public void changeEmail(String email) { this.memberEmail = email; } // 회원 탈퇴시 이메일 삭제용
+    
     public void changePw(String newPw) { this.memberPw = newPw; }
 
     public void changeName(String newName) {
@@ -101,5 +104,7 @@ public class Member {
     }
 
     public void changeStatus(String newStatus) { this.memberStatus = newStatus; }
+
+    public void changeLeaveDate(LocalDate localDate) { this.memberLeaveDate = localDate; }
 
 }

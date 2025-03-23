@@ -4,6 +4,8 @@ import com.sbcamping.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -24,5 +26,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // 이름 & 이메일로 회원 확인 (비밀번호 찾기)
     Member findByMemberNameAndMemberEmail (String memberName, String memberEmail);
 
+    // 탈퇴한 지 30일 경과한 회원
+    List<Member> findByMemberStatusAndMemberLeaveDateBefore(String status, LocalDate thirtyDaysAgo);
 
 }

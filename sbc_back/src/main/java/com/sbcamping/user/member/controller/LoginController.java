@@ -2,6 +2,7 @@ package com.sbcamping.user.member.controller;
 
 import com.sbcamping.common.jwt.JWTUtil;
 import com.sbcamping.domain.Member;
+import com.sbcamping.user.member.dto.JwtMemberDTO;
 import com.sbcamping.user.member.dto.MemberDTO;
 import com.sbcamping.user.member.service.LoginService;
 import jakarta.mail.MessagingException;
@@ -100,16 +101,24 @@ public class LoginController {
     public Map<String, Object> getMemberFromKakao(String accessToken){
         log.info("카카오 로그인 토큰 확인 : {}", accessToken.substring(10));
         Member member = loginService.getKakaoMember(accessToken);
-        MemberDTO memberDTO = new MemberDTO(
+//        MemberDTO memberDTO = new MemberDTO(
+//                member.getMemberEmail(),
+//                member.getMemberPw(),
+//                member.getIsSocial(),
+//                member.getMemberRole(),
+//                member.getMemberStatus(),
+//                member.getMemberID()
+//        );
+        JwtMemberDTO jwtMemberDTO = new JwtMemberDTO(
+                member.getMemberID(),
                 member.getMemberEmail(),
-                member.getMemberPw(),
-                member.getIsSocial(),
+                member.getMemberName(),
                 member.getMemberRole(),
                 member.getMemberStatus(),
-                member.getMemberID()
+                member.getIsSocial()
         );
         Map<String, Object> claims = new HashMap<>();
-        claims.put("member", memberDTO);
+        claims.put("member", jwtMemberDTO);
 
         String jwtAccessToken = JWTUtil.generateToken(claims, 10);
         String jwtRefreshToken = JWTUtil.generateToken(claims, 60*12);

@@ -68,7 +68,7 @@ const PasswordAuth = ({onSuccess}) => {
     }
 
     useEffect (() => {
-        if(memberState.isSocial == "Y"){
+        if(memberState.isSocial === "Y"){
             onSuccess();
         }
     })
@@ -342,7 +342,7 @@ const MemberInfo = () => {
             <hr></hr>
             <div className={"modmemwrap"}>
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                {isSocial ? <div className="mb-3">✅소셜회원</div> : <p></p>}
+                {isSocial==='Y' ? <div className="mb-3">✅소셜회원</div> : <p></p>}
                     {/* 이메일 */}
                     <Form.Group as={Row} className="mb-3" >
                         <Form.Label column sm={2}>
@@ -500,9 +500,12 @@ const MemberInfo = () => {
                         </Col>
                     </Form.Group>
                 </Form>
-                <div className={"withdrawbox"}>
+                {isSocial==='Y' ? 
+                <div className="mb-3"><p></p></div> 
+                : <div className={"withdrawbox"}>
                     <span onClick={() => navigate('/mypage/withdraw')}>회원탈퇴</span>
-                </div>
+                </div>}
+                
             </div>
             <div className="btnbox">
                 <Button className={"loginbutton_default"} type="submit" onClick={handleSubmit} >회원정보 수정</Button>
@@ -513,7 +516,7 @@ const MemberInfo = () => {
 
 
 const MemberInfoPage = () => {
-    const loginState = useSelector((state) => state.loginSlice)
+    // const loginState = useSelector((state) => state.loginSlice)
     // console.log('loginState :' , loginState)
     const [showMemberInfo, setShowMemberInfo] = useState(false);
 

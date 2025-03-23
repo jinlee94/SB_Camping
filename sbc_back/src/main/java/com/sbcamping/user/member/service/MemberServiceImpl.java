@@ -56,7 +56,7 @@ public class MemberServiceImpl implements MemberService {
         String msg;
 
         // member 를 찾을 수 없거나 비밀번호가 일치하지 않으면 fail
-        if (!result) {
+        if (!result || member == null) {
             msg = "fail";
             return msg;
         }
@@ -76,10 +76,15 @@ public class MemberServiceImpl implements MemberService {
                 }
             }
         }
-        member.changeStatus("WITHDRAWN");
-        member.changePhone("00000000000");
+        member.changeStatus("OFF");
+        member.changePhone(null);
+        member.changeLocal(null);
+        member.changePw(UUID.randomUUID().toString());
+        member.changeBirth(null);
+        member.changeLeaveDate(LocalDate.now());
         memberRepository.save(member);
         msg = "success";
+        log.info("{} : 회원 탈퇴 완료", member.getMemberID());
 
         return msg;
     }
