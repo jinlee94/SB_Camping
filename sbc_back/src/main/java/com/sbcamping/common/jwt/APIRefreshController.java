@@ -14,7 +14,7 @@ import java.util.Map;
 @Slf4j
 public class APIRefreshController {
 
-    // 토큰 유효성 검증 후 만료됐으면 리프레쉬 토큰 발급하는 메소드
+    // 토큰 유효성 검증 후 만료됐으면 리프레쉬 토큰 검증후 액세스토큰 발급하는 메소드
     @GetMapping("/api/auth/refresh")
     public Map<String, Object> refresh(@RequestHeader("Authorization") String authHeader,
                                        @RequestHeader("X-Refresh-Token") String refreshToken) {
@@ -53,9 +53,9 @@ public class APIRefreshController {
     // 토큰 만료되었는지 검증하는 메소드 
     // (만료되었으면 true, 아직 시간남았으면 false)
     private boolean checkExpiredToken(String accessToken) {
+        log.info("token 검증");
         try {
             JWTUtil.validateToken(accessToken);
-            log.info("token 검증");
             return false; // 사용할 수 있는 토큰이면 false 반환
         } catch (CustomJWTException e) {
             if (e.getMessage().equals("Expired")){ // 만료되었으면 true 반환

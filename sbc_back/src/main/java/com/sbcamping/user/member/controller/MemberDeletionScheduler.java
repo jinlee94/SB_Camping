@@ -18,7 +18,7 @@ public class MemberDeletionScheduler {
     private final MemberRepository memberRepository;
 
     // 탈퇴한지 30일 지나면 이메일 정보 삭제
-    @Scheduled(cron = "0 */1 * * * *") // 매일 자정 실행
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정 실행
     public void deleteMembers(){
         LocalDate thirtyDaysAgo = LocalDate.now().minusDays(30); // 30일전 날짜 계산
         List<Member> memberToEmailDelete = memberRepository.findByMemberStatusAndMemberLeaveDateBefore("OFF", thirtyDaysAgo);

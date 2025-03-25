@@ -1,47 +1,35 @@
 package com.sbcamping.common.jwt;
 
 import com.google.gson.Gson;
-import com.sbcamping.domain.Member;
 import com.sbcamping.user.member.dto.JwtMemberDTO;
-import com.sbcamping.user.member.dto.MemberDTO;
-import com.sbcamping.user.member.repository.MemberRepository;
-import com.sbcamping.user.member.service.CustomUserDetailService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class JWTCheckFilter extends OncePerRequestFilter {
 
-    // front 에서 API 서버로 요청시 JWT 토큰 체크
-    // 유효한 JWT 토큰인지 확인하는 필터 클래스
+    // 회원의 요청이 오면 유효한 JWT 토큰인지 확인하는 필터 클래스
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
         log.info("------------------------JWT 유효성 체크 필터");
         String authHeaderStr = request.getHeader("Authorization");
-        if (authHeaderStr == null) {
-            log.info("-------요청이 jwtAxios 인지 확인해보세요");
-        }
+        if (authHeaderStr == null) {log.info("-------헤더 정보에 Authorization 누락됨");}
         try {
             String accessToken = authHeaderStr.substring(7);
 
@@ -57,7 +45,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             String isSocial = (String) memberClaims.get("isSocial");
             JwtMemberDTO jwtMemberDTO = new JwtMemberDTO(memberId,memberEmail,memberName,memberRole,memberStatus,isSocial);
 
-            // 인증 객체 생성(사용자 정보와 권한)
+            // 인증 객체 생성(사용자 정보와 권한) JWT 인증 방식에서는 비밀번호 필요 없어서 null
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(jwtMemberDTO,null, Arrays.asList(new SimpleGrantedAuthority(memberRole)));
             // 사용자의 인증 상태 저장 (인증 완료)
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
