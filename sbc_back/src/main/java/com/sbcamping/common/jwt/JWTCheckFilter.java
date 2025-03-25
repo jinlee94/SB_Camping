@@ -3,7 +3,6 @@ package com.sbcamping.common.jwt;
 import com.google.gson.Gson;
 import com.sbcamping.user.member.dto.JwtMemberDTO;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -46,7 +45,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             JwtMemberDTO jwtMemberDTO = new JwtMemberDTO(memberId,memberEmail,memberName,memberRole,memberStatus,isSocial);
 
             // 인증 객체 생성(사용자 정보와 권한) JWT 인증 방식에서는 비밀번호 필요 없어서 null
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(jwtMemberDTO,null, Arrays.asList(new SimpleGrantedAuthority(memberRole)));
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(jwtMemberDTO,null, List.of(new SimpleGrantedAuthority(memberRole)));
             // 사용자의 인증 상태 저장 (인증 완료)
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             filterChain.doFilter(request, response);
@@ -63,7 +62,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
     // 토큰 필터 제외 설정
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         // preflight 요청은 체크하지 않음
         // preflight 란 CORS 상황에서 보안을 확인하기 위해 브라우저가 제공하는 기능
         if (request.getMethod().equals("OPTIONS")) {

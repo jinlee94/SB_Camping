@@ -22,7 +22,7 @@ import java.util.Map;
 public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         log.info("회원 인증 완료, JWT 토큰 저장 중");
 
         MemberDTO memberDTO = (MemberDTO) authentication.getPrincipal();
